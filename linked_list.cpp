@@ -17,6 +17,7 @@ public:
   bool isEmpty();
   void insert(int);
   void append(int);
+  void delete_end();
   void delete_node(int);
   void search_node(int);
   void display();
@@ -89,11 +90,26 @@ void Linked_list::insert(int data)
   }
 }
 
-// Delete data
-void Linked_list::delete_node(int n)
+// Delete data to the end of a node
+void Linked_list::delete_end()
 {
   Node *p, *q;
-  if (head->data == n)
+  p = head;
+
+  while (p->next != 0)
+  {
+    q = p;
+    p = p->next;
+  }
+  q->next = 0;
+  delete p;
+}
+
+// Delete data
+void Linked_list::delete_node(int data)
+{
+  Node *p, *q;
+  if (head->data == data)
   {
     p = head;
     head = head->next;
@@ -102,7 +118,7 @@ void Linked_list::delete_node(int n)
   else
   {
     p = head;
-    while (p != 0 && p->data != n)
+    while (p != 0 && p->data != data)
     {
       q = p;
       p = p->next;
@@ -118,25 +134,25 @@ void Linked_list::delete_node(int n)
 }
 
 // Search data
-void Linked_list::search_node(int n)
+void Linked_list::search_node(int data)
 {
   Node *p, *q;
-  if (head->data == n)
-    cout << n << " is in list." << endl;
+  if (head->data == data)
+    cout << data << " is in list." << endl;
   else
   {
     p = head;
-    while (p != 0 && p->data != n)
+    while (p != 0 && p->data != data)
     {
       q = p;
       p = p->next;
     }
     if (p != 0)
     {
-      cout << n << " is in list." << endl;
+      cout << data << " is in list." << endl;
     }
     else
-      cout << n << " is not in list." << endl;
+      cout << data << " is not in list." << endl;
   }
 }
 
@@ -184,6 +200,7 @@ int main()
   l1.insert(30);
   l1.insert(50);
   l1.delete_node(30);
+  l1.delete_end();
 
   l1.display();
 
