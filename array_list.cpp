@@ -1,31 +1,27 @@
 #include <iostream>
 using namespace std;
 
-#define MAX 100
-
+template <typename T>
 class Array_list
 {
 private:
-  int *arr;
+  T *arr;
   int num_data;
+  int size;
 
 public:
   Array_list()
   {
-    int *arr = new int[MAX];
+    arr = new T[1];
     num_data = 0;
-  }
-  Array_list(int size)
-  {
-    int *arr = new int[size];
-    num_data = 0;
+    size = 1;
   }
 
   bool isEmpty();
-  void list_extension(int, int);
-  void list_extension_index(int, int, int);
-  void insert(int);
-  void insert_index(int, int);
+  void list_extension(T, int);
+  void list_extension_index(T, int, int);
+  void insert(T);
+  void insert_index(T, int);
   void remove();
   void remove_index(int);
   void search_index(int);
@@ -33,88 +29,79 @@ public:
   ~Array_list();
 };
 
-bool Array_list::isEmpty()
+template <typename T>
+bool Array_list<T>::isEmpty()
 {
-  if (num_data == 0)
-    return true;
-  else
-    return false;
+  return (num_data == 0);
 }
 
-void Array_list::list_extension(int data, int len)
+template <typename T>
+void Array_list<T>::list_extension(T data, int len)
 {
-  int newSize = len + 1;
-  int *newArray = new int[newSize];
+  int size = len * 2;
+  T *newArray = new T[size];
 
-  newArray[newSize - 1] = data;
+  newArray[size - 1] = data;
 
   for (int i = 0; i < len; i++)
     newArray[i] = arr[i];
 
-  arr = new int[newSize];
+  delete[] arr;
+  arr = new T[size];
 
-  for (int i = 0; i < newSize; i++)
+  for (int i = 0; i < size; i++)
   {
     arr[i] = newArray[i];
   }
 }
 
-void Array_list::list_extension_index(int data, int len, int index)
+template <typename T>
+void Array_list<T>::list_extension_index(T data, int len, int index)
 {
-  int newSize = len + 1;
-  int *newArray = new int[newSize];
+  int size = len * 2;
+  T *newArray = new T[size];
 
   newArray[index - 1] = data;
 
   for (int i = 0; i < index - 1; i++)
     newArray[i] = arr[i];
 
-  for (int i = newSize - 1; i > index - 1; i--)
+  for (int i = size - 1; i > index - 1; i--)
     newArray[i] = arr[i - 1];
 
-  arr = new int[newSize];
+  delete[] arr;
+  arr = new T[size];
 
-  for (int i = 0; i < newSize; i++)
+  for (int i = 0; i < size; i++)
   {
     arr[i] = newArray[i];
   }
 }
 
-void Array_list::insert(int data)
+template <typename T>
+void Array_list<T>::insert(T data)
 {
-  int len = num_data;
-  if (num_data >= MAX - 1)
-  {
-    cout << "list is full!!" << endl;
-  }
+  if (num_data == size)
+    list_extension(data, size);
+
   else
-  {
-    if (num_data == len)
-      list_extension(data, len);
-    else
-      arr[num_data] = data;
-  }
+    arr[num_data] = data;
   num_data++;
 }
 
-void Array_list::insert_index(int data, int index)
+template <typename T>
+void Array_list<T>::insert_index(T data, int index)
 {
-  int len = num_data;
-  if (num_data >= MAX - 1)
-  {
-    cout << "list is full!!" << endl;
-  }
+
+  if (num_data == size)
+    list_extension_index(data, size, index);
   else
-  {
-    if (num_data == len)
-      list_extension_index(data, len, index);
-    else
-      arr[index] = data;
-  }
+    arr[index] = data;
   num_data++;
 }
 
-void Array_list::remove()
+template <typename T>
+void Array_list<T>::remove()
 {
   if (num_data == 0)
     isEmpty();
@@ -125,29 +112,32 @@ void Array_list::remove()
   }
 }
 
-void Array_list::remove_index(int index)
+template <typename T>
+void Array_list<T>::remove_index(int index)
 {
   if (num_data == 0)
     isEmpty();
   else
   {
-    arr[index - 1] = 0;
-    for (int i = index - 1; i < num_data - 1; i++)
+    arr[index] = 0;
+    for (int i = index; i < num_data - 1; i++)
       arr[i] = arr[i + 1];
 
     num_data--;
   }
 }
 
-void Array_list::search_index(int index)
+template <typename T>
+void Array_list<T>::search_index(int index)
 {
-  if (num_data == 0 || index > num_data || index == 0)
+  if (num_data == 0 || index > num_data)
     cout << "data is not in list." << endl;
   else
-    cout << arr[index - 1] << endl;
+    cout << arr[index] << endl;
 }
 
-void Array_list::display()
+template <typename T>
+void Array_list<T>::display()
 {
   if (num_data == 0)
     isEmpty();
@@ -159,14 +149,16 @@ void Array_list::display()
   }
 }
 
-Array_list::~Array_list()
+template <typename T>
+Array_list<T>::~Array_list()
 {
   delete[] arr;
+  arr = 0;
 }
 
 int main()
 {
-  Array_list a1(2);
+  Array_list<int> a1;
 
   a1.insert(10);
   a1.insert(20);
@@ -177,7 +169,8 @@ int main()
   a1.remove();
   a1.remove_index(2);
 
-  a1.search_index(0);
+  a1.search_index(1);
 
   a1.display();
+  a1.~Array_list();
 }
