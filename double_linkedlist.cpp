@@ -15,12 +15,14 @@ class Linked_list
 private:
   Node<T> *head;
   Node<T> *tail;
+  int size;
 
 public:
   Linked_list()
   {
     head = nullptr;
     tail = nullptr;
+    size = 0;
   }
   bool isEmpty();
   void insert_front(T);
@@ -102,6 +104,8 @@ void Linked_list<T>::insert_front(T data)
     temp->next = head;
     head = temp;
   }
+
+  size += 1;
 }
 
 // Add data to the end of a node
@@ -125,6 +129,8 @@ void Linked_list<T>::insert_back(T data)
     temp->prev = tail;
     tail = temp;
   }
+
+  size += 1;
 }
 
 // Add index of the data
@@ -148,10 +154,21 @@ void Linked_list<T>::insert_index(T data, int index)
   }
   else
   {
-    Node<T> *ptr = head;
+    Node<T> *ptr;
     Node<T> *p_next;
-    for (int i = 0; i < index - 1; i++)
-      ptr = ptr->next;
+
+    if (index <= size / 2)
+    {
+      ptr = head;
+      for (int i = 0; i < index - 1; i++)
+        ptr = ptr->next;
+    }
+    else
+    {
+      ptr = tail;
+      for (int i = 0; i < size - index - 1; i++)
+        ptr = ptr->prev;
+    }
 
     if (ptr->next == nullptr)
     {
@@ -166,6 +183,8 @@ void Linked_list<T>::insert_index(T data, int index)
       temp->prev = ptr;
     }
   }
+
+  size += 1;
 }
 
 // Delete data at the beginning
@@ -240,12 +259,21 @@ template <typename T>
 void Linked_list<T>::delete_index(int index)
 {
   Node<T> *p, *q;
-  p = head;
 
-  for (int i = 0; i < index; i++)
+  if (index <= size / 2)
   {
-    q = p;
-    p = p->next;
+    p = head;
+    for (int i = 0; i < index; i++)
+    {
+      q = p;
+      p = p->next;
+    }
+  }
+  else
+  {
+    p = tail;
+    for (int i = 0; i < size - index; i++)
+      p = p->prev;
   }
 
   if (p == head)
@@ -339,12 +367,13 @@ int main()
   l1.delete_index(4);
   l1.delete_index(1);
 
-  for (auto itr = l1.begin(); itr != l1.end(); itr++)
-    cout << *itr << " ";
-  cout << endl;
-
   l1.search_node(20);
   l1.search_node(30);
+
+  for (auto itr = l1.begin(); itr != l1.end(); itr++)
+    cout
+        << *itr << " ";
+  cout << endl;
 
   l1.~Linked_list();
 }
