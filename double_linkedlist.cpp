@@ -274,6 +274,7 @@ void Linked_list<T>::delete_index(int index)
     p = tail;
     for (int i = 0; i < size - index; i++)
       p = p->prev;
+    q = p->prev;
   }
 
   if (p == head)
