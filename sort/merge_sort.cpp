@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
 
+// 배열을 잘게 쪼개고 둘씩 크기를 비교하여 정렬한 후 그 배열들을 합침 ( 분할 정복 알고리즘 ) ( 시간복잡도: O(nlogn) )
+// 분할된 배열들을 저장하기 위해 메모리 소비량이 매우 크다
+// out-place, stable, comparison
 int sort[8];
 
 void merge(int arr[], int left, int right, int mid) {

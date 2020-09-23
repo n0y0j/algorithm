@@ -1,6 +1,10 @@
 #include <iostream>
 using namespace std;
 
+// pivot값을 기준으로 pivot보다 작은 값은 왼쪽, 큰 값은 오른쪽에 저장해 리스트를 분할함
+// 위와 같은 과정을 분할된 리스트에 재귀적으로 반복함 ( 시간복잡도: O(nlogn) )
+// pivot의 값을 잘못 지정할 시 ( 배열에서 가장 작은 값 또는 큰값 ) ( 시간복잡도: O(n**2) )
+// in-place, not-stable, comparison
 void swap(int arr[], int left, int right) {
     int temp = arr[left];
     arr[left] = arr[right];

@@ -1,6 +1,10 @@
 #include <iostream>
 using namespace std;
 
+// 원소가 들어갈 자리를 미리 마련하고, 배열에서 최소값을 찾아 삽입함
+// 배열을 전체적으로 1회 비교했다면, 0번째 인덱스에 최소값이 삽입됨
+// 위와 같은 과정을 size-1번 진행 ( 시간 복잡도: O(n**2) )
+// in-place, stable, comparison
 void swap(int arr[], int min_index, int i) {
     int temp = arr[i];
     arr[i] = arr[min_index];
